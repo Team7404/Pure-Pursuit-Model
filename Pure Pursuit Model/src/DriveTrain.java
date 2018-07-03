@@ -9,7 +9,8 @@ public class DriveTrain {
 	double pos_;
 	double posx_;
 	double posy_;
-	double angle_;
+	double angle_ = 0;
+	double anglev_;
 	
 	public DriveTrain(DriveTrainGearbox left, DriveTrainGearbox right,double kWheelBase, double kDt) {
 		this.left = left;
@@ -18,23 +19,21 @@ public class DriveTrain {
 		this.kDt = kDt;
 	}
 	
-	double lposl_;
-	double lposr_;
 	
 	public void calculate() {
 		
 		//Estimates heading... should be recorded for real robot
-		double	deltal = left.getPosition_()-lposl_;
-		double deltar = right.getPosition_()-lposr_;
-		angle_ += (1/kWheelBase) * (deltar - deltal) *kDt;
+		anglev_ = (1/kWheelBase) * (right.velocity_ - left.velocity_);
+		angle_ += anglev_ *kDt;
 		
+		// the pos is the average of the 2 sides
+		double d_pos_ =( left.velocity_ *kDt + right.velocity_ *kDt ) /2;
+		pos_ += d_pos_;
 		
-		pos_ += (deltal + deltar ) / 2;
-		posx_ += pos_ * Math.cos(angle_);
-		posy_ += pos_ * Math.sin(angle_);
+		//use trig and linear approximation to find x and y
+		posx_ += d_pos_ * Math.cos(angle_);
+		posy_ += d_pos_ * Math.sin(angle_);
 		
-		lposl_ = left.getPosition_();
-		lposr_ = right.getPosition_();
 		
 	}
 	

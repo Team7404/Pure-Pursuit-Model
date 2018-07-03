@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class CSVHelper {
 
+	
+	
     public static double[][] parseCSV(File file) throws FileNotFoundException {
         List<List<String>> lines = new ArrayList<>();
         Scanner inputStream = new Scanner(file);
@@ -40,12 +42,19 @@ public class CSVHelper {
         return returnMe;
     }
 
-    public static void writeCSV(double[][] array, File writeTo) throws IOException {
+    public static void writeCSV(ArrayList<CSVObject> array, File writeTo) throws IOException {
         FileWriter writer = new FileWriter(writeTo);
         String writeMe = "";
-        for (double[] vals : array) {
-            for (double val : vals) {
-                writeMe += Double.toString(val);
+        
+        for (CSVObject vals : array) {
+        	writeMe += vals.name;
+        	writeMe += ",";
+        }
+
+        writeMe += "\n";
+        for (int i = 0; i < array.get(0).log.size(); i++) {
+            for (CSVObject vals : array) {
+                writeMe += vals.log.get(i).toString();
                 writeMe += ",";
             }
             writeMe += "\n";
@@ -54,4 +63,6 @@ public class CSVHelper {
         writer.write(writeMe);
         writer.close();
     }
+    
+    
 }

@@ -21,12 +21,12 @@ public class DriveTrainGearbox {
 	// Torque constant
 	final double Kt = (kNumMotors * kStallTorque) / kStallCurrent;
 	// Gear ratio
-	final double kG = 7;
+	final double kG = 7.0;
 	// Radius of pulley
-	final double kr = 2 * (0.0254);// / Math.PI / 2.0);
+	final double kr = 2.0 * (0.0254);// / Math.PI / 2.0);
 
-	double position_;
-	double velocity_;
+	double position_ ;
+	double velocity_ ;
 
 	double kDt;
 
@@ -36,12 +36,15 @@ public class DriveTrainGearbox {
 		this.kDt = kDt;
 	}
 
+	// thanks 971
 	public double getAcceleration(double voltage, double velocity) {
 		return -Kt * kG * kG / (Kv * kResistance * kr * kr * kMass) * velocity
 				+ kG * Kt / (kResistance * kr * kMass) * voltage;
 	}
 
+	//simple integration methods
 	public void calculate(double voltage) {
+		
 		this.position_ += this.velocity_ * kDt;
 		this.velocity_ += getAcceleration(voltage, this.velocity_)*kDt;
 	}
