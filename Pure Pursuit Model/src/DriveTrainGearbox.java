@@ -10,7 +10,7 @@ public class DriveTrainGearbox {
 	// Free Current in Amps
 	final double kFreeCurrent = 3;
 	// Mass of the Elevator
-	final double kMass = 32.5;
+	final double kMass = 33.3;
 
 	// Number of motors
 	final double kNumMotors = 3.0;
